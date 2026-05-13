@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Particulares - Banco Santander</title>
+  <meta name="description" content="Banco Santander. Soluciones financieras para particulares: cuentas, tarjetas, hipotecas, préstamos, seguros e inversión.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Santander+Headline:wght@400;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- COOKIES BANNER -->
+  <div id="cookies-banner" class="cookies-banner">
+    <div class="cookies-content">
+      <h3 class="cookies-title">Configura tu experiencia web</h3>
+      <p class="cookies-text">Hacemos uso de cookies, propias y de terceros, para diferenciar tu experiencia de la de otros usuarios, analizar tu navegación, elaborar modelos analíticos con los que crear un perfil con tus hábitos de navegación e información que facilites y mostrarte publicidad personalizada.</p>
+      <div class="cookies-actions">
+        <a href="#" class="cookies-btn cookies-btn--config" onclick="document.getElementById('cookies-banner').style.display='none'; return false;">Configurar cookies</a>
+        <a href="#" class="cookies-btn cookies-btn--reject" onclick="document.getElementById('cookies-banner').style.display='none'; return false;">RECHAZAR</a>
+        <a href="#" class="cookies-btn cookies-btn--accept" onclick="document.getElementById('cookies-banner').style.display='none'; return false;">ACEPTAR</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header id="header" class="header">
+    <div class="header-inner">
+      <!-- Logo -->
+      <a href="index.html" class="header-logo" aria-label="Banco Santander - Ir a inicio">
+        <img src="logo_santander.svg" alt="Banco Santander" style="height:28px;width:auto;display:block;">
+      </a>
+
+      <!-- Nav desktop -->
+      <nav class="header-nav">
+        <a href="#" class="nav-item nav-item--active">Particulares</a>
+        <a href="#" class="nav-item">Empresas</a>
+        <a href="#" class="nav-item">Autónomos</a>
+        <a href="#" class="nav-item">Banca Privada</a>
+        <a href="#" class="nav-item">Select</a>
+      </nav>
+
+      <!-- Header right -->
+      <div class="header-right">
+        <button class="lang-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Español
+        </button>
+        <button class="acceso-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Acceso clientes
+        </button>
+        <a href="cuenta-soporte.html" class="hazte-cliente-btn">Hazte Cliente</a>
+        <button class="menu-mobile-btn" onclick="toggleMobileMenu()" aria-label="Menú">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#" class="mobile-nav-item mobile-nav-item--active">Particulares</a>
+      <a href="#" class="mobile-nav-item">Empresas</a>
+      <a href="#" class="mobile-nav-item">Autónomos</a>
+      <a href="#" class="mobile-nav-item">Banca Privada</a>
+      <a href="#" class="mobile-nav-item">Select</a>
+      <div class="mobile-nav-divider"></div>
+      <a href="cuenta-soporte.html" class="mobile-nav-item mobile-nav-cta">Hazte Cliente</a>
+      <a href="#" class="mobile-nav-item">Acceso clientes</a>
+    </div>
+  </header>
+
+  <!-- HERO SLIDER -->
+  <section class="hero-slider">
+    <div class="slider-wrapper" id="sliderWrapper">
+
+      <!-- Slide 1 -->
+      <div class="slide slide--active" id="slide1">
+        <div class="slide-bg" style="background-image: url('hero2.webp')"></div>
+        <div class="slide-overlay"></div>
+        <div class="slide-content">
+          <span class="slide-tag">ÚLTIMOS DÍAS</span>
+          <h1 class="slide-title">Junta General de Accionistas 2026</h1>
+          <p class="slide-subtitle">Contamos con <strong>tu participación para seguir impulsando</strong> juntos el futuro de nuestro Banco.</p>
+          <a href="#" class="slide-btn">Participar</a>
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="slide" id="slide2">
+        <div class="slide-bg" style="background-image: url('hero_promo.webp')"></div>
+        <div class="slide-overlay"></div>
+        <div class="slide-content">
+          <h1 class="slide-title">Trae a tus amigos y llévate hasta 800€*</h1>
+          <p class="slide-subtitle">Invita a 10 personas a abrirse una cuenta con tu código. Hasta el 12 de mayo.</p>
+          <a href="#" class="slide-btn">Me interesa</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Slider controls -->
+    <div class="slider-controls">
+      <button class="slider-prev" onclick="changeSlide(-1)" aria-label="Anterior">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="slider-dots">
+        <button class="slider-dot slider-dot--active" onclick="goToSlide(0)">01</button>
+        <button class="slider-dot" onclick="goToSlide(1)">02</button>
+      </div>
+      <button class="slider-pause" onclick="togglePause()" id="pauseBtn" aria-label="Pausar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+      </button>
+      <button class="slider-next" onclick="changeSlide(1)" aria-label="Siguiente">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- QUÉ NECESITAS -->
+  <section class="que-necesitas">
+    <div class="container">
+      <h2 class="section-title">Cuéntanos, ¿qué necesitas?</h2>
+      <div class="necesitas-grid">
+        <a href="#" class="necesitas-item">
+          <div class="necesitas-icon">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="10" width="32" height="22" rx="3" stroke="#EC0000" stroke-width="2"/>
+              <line x1="4" y1="17" x2="36" y2="17" stroke="#EC0000" stroke-width="2"/>
+              <rect x="8" y="21" width="8" height="4" rx="1" fill="#EC0000"/>
+            </svg>
+          </div>
+          <span>Una cuenta</span>
+          <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="#EC0000" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+        <a href="#" class="necesitas-item">
+          <div class="necesitas-icon">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="10" width="32" height="22" rx="3" stroke="#EC0000" stroke-width="2"/>
+              <line x1="4" y1="17" x2="36" y2="17" stroke="#EC0000" stroke-width="2"/>
+              <circle cx="10" cy="24" r="2" fill="#EC0000"/>
+            </svg>
+          </div>
+          <span>Una tarjeta</span>
+          <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="#EC0000" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+        <a href="#" class="necesitas-item">
+          <div class="necesitas-icon">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 30 L20 10 L34 30 Z" stroke="#EC0000" stroke-width="2" fill="none"/>
+              <rect x="15" y="22" width="10" height="8" fill="#EC0000" opacity="0.3"/>
+            </svg>
+          </div>
+          <span>Simular mi hipoteca</span>
+          <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="#EC0000" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+        <a href="#" class="necesitas-item">
+          <div class="necesitas-icon">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="6,30 14,18 22,24 30,12 36,16" stroke="#EC0000" stroke-width="2" fill="none"/>
+              <polyline points="30,12 36,12 36,18" stroke="#EC0000" stroke-width="2" fill="none"/>
+            </svg>
+          </div>
+          <span>Productos de inversión</span>
+          <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="#EC0000" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+        <a href="#" class="necesitas-item">
+          <div class="necesitas-icon">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="6" y="18" width="28" height="14" rx="7" stroke="#EC0000" stroke-width="2"/>
+              <circle cx="20" cy="12" r="4" stroke="#EC0000" stroke-width="2"/>
+            </svg>
+          </div>
+          <span>Un préstamo o renting</span>
+          <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="#EC0000" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+        <a href="#" class="necesitas-item">
+          <div class="necesitas-icon">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 6 L34 12 V22 C34 29 27 34 20 36 C13 34 6 29 6 22 V12 Z" stroke="#EC0000" stroke-width="2" fill="none"/>
+              <polyline points="14,20 18,24 26,16" stroke="#EC0000" stroke-width="2"/>
+            </svg>
+          </div>
+          <span>Un seguro o alarma</span>
+          <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="#EC0000" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CUENTA JOVEN PROMO -->
+  <section class="promo-section">
+    <div class="container">
+      <div class="promo-grid">
+        <div class="promo-content">
+          <span class="promo-tag">Cuenta para menores</span>
+          <h2 class="promo-title"><span class="promo-highlight">20€ +20€+20€</span> para su primera cuenta</h2>
+          <p class="promo-desc">Haz un <strong>primer ingreso de 20€ o más y sumamos 20€ adicionales***</strong>. Así de simple. Consigue ese impulso hoy para empezar a ahorrar desde el primer día.</p>
+          <a href="cuenta-soporte.html" class="promo-btn">Abrir cuenta</a>
+        </div>
+        <div class="promo-image">
+          <img src="digital4.webp" alt="App Santander" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTOS DESTACADOS -->
+  <section class="productos-section">
+    <div class="container">
+      <div class="productos-grid">
+        <a href="#" class="producto-card">
+          <div class="producto-img" style="background-image: url('card_hipoteca.webp')"></div>
+          <div class="producto-body">
+            <span class="producto-cat">Hipotecas</span>
+            <h3 class="producto-title">Hipotecas Santander</h3>
+            <p class="producto-desc">Te acompañamos durante todo el proceso, ofreciéndote atención personalizada.</p>
+            <span class="producto-link">Ver más <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
+          </div>
+        </a>
+        <a href="#" class="producto-card">
+          <div class="producto-img" style="background-image: url('card_renting.webp')"></div>
+          <div class="producto-body">
+            <span class="producto-cat">Renting de coches</span>
+            <h3 class="producto-title">Re estrena con Renting</h3>
+            <p class="producto-desc">Coches de renting anteriores, con entrega rápida. Consulta condiciones.</p>
+            <span class="producto-link">Ver más <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
+          </div>
+        </a>
+        <a href="#" class="producto-card">
+          <div class="producto-img" style="background-image: url('card_tarjeta.webp')"></div>
+          <div class="producto-body">
+            <span class="producto-cat">Tarjetas</span>
+            <h3 class="producto-title">Tarjeta Crédito Santander</h3>
+            <p class="producto-desc">Te devuelve el 1% de tus compras durante 1 año (hasta 10€ netos/mes).</p>
+            <span class="producto-link">Ver más <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
+          </div>
+        </a>
+        <a href="#" class="producto-card">
+          <div class="producto-img" style="background-image: url('card_macbook.webp')"></div>
+          <div class="producto-body">
+            <span class="producto-cat">Santander Renting</span>
+            <h3 class="producto-title">Nuevo MacBook Neo</h3>
+            <p class="producto-desc">Disfrútalo con renting desde 14,99 €/mes a 48 meses (IVA incluido).</p>
+            <span class="producto-link">Ver más <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONECTADOS SIEMPRE -->
+  <section class="conectados-section">
+    <div class="container">
+      <div class="conectados-grid">
+        <div class="conectados-content">
+          <h2 class="section-title">Conectados, siempre</h2>
+          <p class="conectados-desc">Si tú también piensas que primero están las personas y luego todo lo demás, y que ser digital no es un fin sino un medio, estamos conectados. Cuando quieras. Como quieras. Donde quieras.</p>
+          <div class="conectados-items">
+            <div class="conectados-item">
+              <div class="conectados-icon">
+                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="8" y="4" width="24" height="32" rx="3" stroke="#EC0000" stroke-width="2"/>
+                  <line x1="14" y1="32" x2="26" y2="32" stroke="#EC0000" stroke-width="2"/>
+                  <circle cx="20" cy="32" r="1" fill="#EC0000"/>
+                </svg>
+              </div>
+              <div>
+                <h4>Banca Digital</h4>
+                <p>Accede a tus cuentas y tarjetas cuando quieras, desde la Banca Online o la App Santander.</p>
+              </div>
+            </div>
+            <div class="conectados-item">
+              <div class="conectados-icon">
+                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="6" y="8" width="28" height="24" rx="3" stroke="#EC0000" stroke-width="2"/>
+                  <circle cx="20" cy="20" r="5" stroke="#EC0000" stroke-width="2"/>
+                  <path d="M20 6 L20 10 M20 30 L20 34 M6 20 L10 20 M30 20 L34 20" stroke="#EC0000" stroke-width="2"/>
+                </svg>
+              </div>
+              <div>
+                <h4>Pagos móviles</h4>
+                <p>Pagar con tu teléfono es muy fácil: Apple Pay, Samsung Pay, Bizum y más.</p>
+              </div>
+            </div>
+            <div class="conectados-item">
+              <div class="conectados-icon">
+                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 32 L8 20 L20 10 L32 20 L32 32 Z" stroke="#EC0000" stroke-width="2" fill="none"/>
+                  <rect x="15" y="24" width="10" height="8" stroke="#EC0000" stroke-width="2"/>
+                </svg>
+              </div>
+              <div>
+                <h4>Oficinas y cajeros</h4>
+                <p>Más de 1.827 oficinas y 4.700 cajeros en todo el territorio nacional.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="conectados-image">
+          <img src="digital1.webp" alt="Banca digital Santander" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AYUDA -->
+  <section class="ayuda-section">
+    <div class="container">
+      <h2 class="section-title">¿Necesitas ayuda?</h2>
+      <p class="ayuda-subtitle">Estamos en contacto</p>
+      <div class="ayuda-grid">
+        <a href="#" class="ayuda-card">
+          <div class="ayuda-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="24" cy="24" r="18" stroke="#EC0000" stroke-width="2"/>
+              <path d="M16 20 C16 16 20 12 24 12 C28 12 32 16 32 20 C32 26 24 30 24 30" stroke="#EC0000" stroke-width="2" fill="none"/>
+              <circle cx="24" cy="36" r="2" fill="#EC0000"/>
+            </svg>
+          </div>
+          <h3>Centro de ayuda</h3>
+          <p>Si tienes una duda, consulta o incidencia, ponemos a tu disposición diferentes canales.</p>
+          <span class="ayuda-link">Ir al centro de ayuda <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#EC0000" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
+        </a>
+        <a href="#" class="ayuda-card">
+          <div class="ayuda-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="8" width="32" height="32" rx="4" stroke="#EC0000" stroke-width="2"/>
+              <line x1="8" y1="18" x2="40" y2="18" stroke="#EC0000" stroke-width="2"/>
+              <line x1="18" y1="8" x2="18" y2="18" stroke="#EC0000" stroke-width="2"/>
+              <line x1="30" y1="8" x2="30" y2="18" stroke="#EC0000" stroke-width="2"/>
+              <rect x="14" y="24" width="6" height="6" rx="1" fill="#EC0000" opacity="0.4"/>
+              <rect x="28" y="24" width="6" height="6" rx="1" fill="#EC0000" opacity="0.4"/>
+              <rect x="14" y="34" width="6" height="2" rx="1" fill="#EC0000" opacity="0.4"/>
+            </svg>
+          </div>
+          <h3>Pedir cita previa</h3>
+          <p>Sin colas, elige el día y hora para ir a tu oficina y hablar con un gestor.</p>
+          <span class="ayuda-link">Pedir cita <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#EC0000" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
+        </a>
+        <a href="#" class="ayuda-card">
+          <div class="ayuda-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 8 L36 8 L36 36 L24 44 L12 36 Z" stroke="#EC0000" stroke-width="2" fill="none"/>
+              <circle cx="24" cy="22" r="6" stroke="#EC0000" stroke-width="2"/>
+              <path d="M14 36 C14 30 18 28 24 28 C30 28 34 30 34 36" stroke="#EC0000" stroke-width="2" fill="none"/>
+            </svg>
+          </div>
+          <h3>Oficinas y cajeros</h3>
+          <p>Cuenta con más de 1.827 oficinas y más de 4.700 cajeros distribuidos por todo el territorio.</p>
+          <span class="ayuda-link">Buscar oficina <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#EC0000" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="footer-cols">
+          <div class="footer-col">
+            <h4 class="footer-col-title">Productos</h4>
+            <ul>
+              <li><a href="#">Cuentas</a></li>
+              <li><a href="#">Tarjetas</a></li>
+              <li><a href="#">Hipotecas</a></li>
+              <li><a href="#">Préstamos</a></li>
+              <li><a href="#">Seguros</a></li>
+              <li><a href="#">Inversión</a></li>
+              <li><a href="#">Pensiones</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-col-title">Información</h4>
+            <ul>
+              <li><a href="#">Sobre Santander</a></li>
+              <li><a href="#">Sostenibilidad</a></li>
+              <li><a href="#">Trabaja con nosotros</a></li>
+              <li><a href="#">Blog del Banco</a></li>
+              <li><a href="#">Santander Open Academy</a></li>
+              <li><a href="#">Work Café</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-col-title">Herramientas</h4>
+            <ul>
+              <li><a href="#">Calculadora de IVA</a></li>
+              <li><a href="#">Calcular hipoteca</a></li>
+              <li><a href="#">Simulador Préstamos</a></li>
+              <li><a href="#">Simulador Jubilación</a></li>
+              <li><a href="#">Consultar Euríbor</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-col-title">Legal</h4>
+            <ul>
+              <li><a href="#">Aviso Legal</a></li>
+              <li><a href="#">Política de privacidad</a></li>
+              <li><a href="#">Política de cookies</a></li>
+              <li><a href="#">Accesibilidad</a></li>
+              <li><a href="#">Seguridad online</a></li>
+              <li><a href="#">Servicio de Reclamaciones</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <div class="footer-bottom-inner">
+          <div class="footer-logo-wrap">
+            <svg class="footer-flame" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+              <path d="M24 4C24 4 14 14 14 24C14 29.5 18.5 34 24 34C29.5 34 34 29.5 34 24C34 18.5 29.5 13 24 4Z" fill="#EC0000"/>
+              <path d="M16 20C16 20 10 26 10 32C10 37.5 14.5 42 20 42C22.5 42 24.8 41 26.5 39.5C22 39 18 35 18 30C18 26 20 22 24 20C21 18 18 18 16 20Z" fill="#EC0000"/>
+              <path d="M32 20C34 18 37 18 38 20C38 20 44 26 44 32C44 37.5 39.5 42 34 42C31.5 42 29.2 41 27.5 39.5C32 39 36 35 36 30C36 26 34 22 30 20C30.5 19.5 31.2 19.5 32 20Z" fill="#EC0000"/>
+            </svg>
+            <span class="footer-logo-text">Santander</span>
+          </div>
+          <p class="footer-copy">© 2026 Banco Santander, S.A. Todos los derechos reservados.</p>
+          <div class="footer-legal-links">
+            <a href="#">Aviso Legal</a>
+            <a href="#">Privacidad</a>
+            <a href="#">Cookies</a>
+            <a href="#">Accesibilidad</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

